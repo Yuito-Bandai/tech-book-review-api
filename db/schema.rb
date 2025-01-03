@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_30_180413) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_03_082432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,10 +28,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_30_180413) do
     t.string "author"
     t.text "description"
     t.date "published_at"
-    t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_books_on_category_id"
+    t.float "price"
+    t.float "rating"
+    t.integer "pages"
+    t.float "weight"
+    t.string "language"
+    t.string "publisher"
+    t.string "isbn"
+    t.string "amazon_url"
   end
 
   create_table "books_tags", id: false, force: :cascade do |t|
@@ -74,7 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_30_180413) do
 
   add_foreign_key "bookmarks", "books"
   add_foreign_key "bookmarks", "users"
-  add_foreign_key "books", "categories"
   add_foreign_key "reviews", "books"
   add_foreign_key "reviews", "users"
 end

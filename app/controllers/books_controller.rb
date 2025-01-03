@@ -1,6 +1,20 @@
 class BooksController < ApplicationController
   def index
     books = Book.all
+
+    # タイトルで検索
+    if params[:title].present?
+      books = books.where('title LIKE ?', "%#{params[:title]}%")
+    end
+
+    # 著者名で検索
+    if params[:author].present?
+      books = books.where('author LIKE ?', "%#{params[:author]}%")
+    end
+
+    # 最大15件を返す
+    books = books.limit(15)
+
     render json: books, each_serializer: BookSerializer
   end
 
