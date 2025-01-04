@@ -3,23 +3,14 @@ Bookmark.destroy_all
 Review.destroy_all
 Book.destroy_all
 Tag.destroy_all
-Category.destroy_all
 User.destroy_all
 
 # Users
 puts "Creating users..."
 users = User.create!([
-  { username: "alice", email: "alice@example.com", password: "password" },
-  { username: "bob", email: "bob@example.com", password: "password" },
-  { username: "charlie", email: "charlie@example.com", password: "password" }
-])
-
-# Categories
-puts "Creating categories..."
-categories = Category.create!([
-  { name: "Programming" },
-  { name: "Design" },
-  { name: "Business" }
+  { username: "alice", email: "alice@example.com", password: "password1234" },
+  { username: "bob", email: "bob@example.com", password: "password1235" },
+  { username: "charlie", email: "charlie@example.com", password: "password1236" }
 ])
 
 # Tags
@@ -32,12 +23,12 @@ tags = Tag.create!([
   { name: "UX" }
 ])
 
-# Books
+# Books  rails import:books
 puts "Creating books..."
 books = Book.create!([
-  { title: "Eloquent Ruby", author: "Russ Olsen", description: "A guide to writing idiomatic Ruby code.", published_at: "2011-02-15", category: categories[0] },
-  { title: "JavaScript: The Good Parts", author: "Douglas Crockford", description: "Essential JavaScript practices and features.", published_at: "2008-05-01", category: categories[0] },
-  { title: "Don't Make Me Think", author: "Steve Krug", description: "A common-sense approach to web usability.", published_at: "2000-08-01", category: categories[1] }
+  { title: "Eloquent Ruby", author: "Russ Olsen", description: "A guide to writing idiomatic Ruby code.", published_at: "2011-02-15" },
+  { title: "JavaScript: The Good Parts", author: "Douglas Crockford", description: "Essential JavaScript practices and features.", published_at: "2008-05-01" },
+  { title: "Don't Make Me Think", author: "Steve Krug", description: "A common-sense approach to web usability.", published_at: "2000-08-01" }
 ])
 
 # Associate tags with books

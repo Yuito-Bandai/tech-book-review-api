@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
-  # Books APIのエンドポイント
-  resources :books, only: [:index, :show, :create, :update, :destroy]
+  root to: "books#index"
 
-  # # CategoriesとTagsは、必要に応じてネスト可能
-  # resources :categories, only: [:index]
-  # resources :tags, only: [:index]
+  resources :books do
+    resources :reviews, only: [:index, :create]
+    resources :tags, only: [:index]
+  end
 
-  # # ホームやヘルスチェック用ルート
-  # root to: "books#index" # ルートパスでBooksのリストを返す
+  resources :reviews, only: [:show, :update, :destroy]
+  resources :users, only: [:create, :show] do
+    resources :bookmarks, only: [:index, :create, :destroy]
+  end
 
-  # # カスタムエンドポイント（必要に応じて追加）
-  # get '/books/:id/reviews', to: 'books#reviews' # 特定の本に関連するレビューを取得する例
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+  # その他のカスタムルート
+  get '/books/:book_id/reviews', to: 'reviews#index_for_book'
 end
