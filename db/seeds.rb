@@ -40,9 +40,9 @@ books[2].tags << tags[4]           # Don't Make Me Think: UX
 # Reviews
 puts "Creating reviews..."
 reviews = Review.create!([
-  { rating: 5, content: "A must-read for Ruby developers!", book: books[0], user: users[0] },
-  { rating: 4, content: "A great resource for learning JavaScript.", book: books[1], user: users[1] },
-  { rating: 5, content: "Clear and concise advice on usability.", book: books[2], user: users[2] }
+  { rating: 5, content: "Ruby エンジニアは必ず読むべき！", book: books[0], user: users[0] },
+  { rating: 4, content: "JavaScriptの学習者にとってめっちゃいい", book: books[1], user: users[1] },
+  { rating: 5, content: "とても分かりやすかった", book: books[2], user: users[2] }
 ])
 
 # Bookmarks
