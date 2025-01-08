@@ -25,6 +25,6 @@ class SessionsController < ApplicationController
   # JWTトークンのエンコード
   def encode_token(payload)
     payload[:exp] = 24.hours.from_now.to_i  # トークンの有効期限を24時間に設定
-    JWT.encode(payload, ENV['JWT_SECRET_KEY'], 'HS256')  # credentialsからJWT秘密鍵を使用
+    JWT.encode(payload, Rails.application.secrets.secret_key_base, 'HS256')  # credentialsからJWT秘密鍵を使用
   end
 end
