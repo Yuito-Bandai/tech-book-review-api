@@ -50,3 +50,12 @@ end
 gem 'dotenv-rails', groups: [:development, :test]
 #ユーザーのパスワードを安全に保存するためのgem
 gem 'bcrypt', '~> 3.1.7'
+
+#corsの設定を行うためのgem
+gem 'rack-cors'
+
+#serializerを使うためのgem
+gem 'active_model_serializers'
+
+#jwtを使うためのgem
+gem 'jwt'
