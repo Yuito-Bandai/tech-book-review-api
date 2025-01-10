@@ -17,7 +17,13 @@ test:
   <<: *default
   database: tech_book_review_test
 
+#tech_book_review_productionに名前変えたい
 production:
   <<: *default
-  database: tech_book_review_production
-  url: <%= ENV["DATABASE_URL"] %>
+  database: tech_book_review_api
+  username: tech_book_review_api_user
+  password: <%= ENV['TECH_BOOK_REVIEW_DATABASE_PASSWORD'] %>
+  host: dpg-cu0h9v5ds78s73ddvfj0-a.oregon-postgres.render.com
+  url: <%= ENV['DATABASE_URL'] %>
+  port: 5432
+
