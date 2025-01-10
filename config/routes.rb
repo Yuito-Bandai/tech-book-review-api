@@ -1,6 +1,19 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root to: "books#index"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :books do
+    resources :reviews, only: [:create]
+    resources :tags, only: [:index]
+  end
+
+  resources :reviews, only: [:show, :update, :destroy]
+  resources :users, only: [:create, :show] do
+    resources :bookmarks, only: [:index, :create, :destroy]
+  end
+
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+  # その他のカスタムルート
+  get '/books/:book_id/reviews', to: 'reviews#index_for_book'
 end
