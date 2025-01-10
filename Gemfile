@@ -57,8 +57,5 @@ gem 'rack-cors'
 #serializerを使うためのgem
 gem 'active_model_serializers'
 
-#パスワードをハッシュ化するためのgem
-gem 'bcrypt', '~> 3.1.7'
-
 #jwtを使うためのgem
 gem 'jwt'
