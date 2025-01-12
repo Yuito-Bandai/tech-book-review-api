@@ -22,6 +22,7 @@ class ApplicationController < ActionController::API
   # ヘッダーからトークンを抽出
   def extract_token_from_header
     auth_header = request.headers['Authorization']
+    Rails.logger.info "Authorization header: #{auth_header}"  # ヘッダー内容をログ出力
     auth_header&.split(' ')&.last
   end
 
