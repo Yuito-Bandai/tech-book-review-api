@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_user!
-
   # 現在のユーザーを取得する
   def current_user
     token = extract_token_from_header # ヘッダーからトークンを取得してる
@@ -34,12 +32,5 @@ class ApplicationController < ActionController::API
     decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')
     Rails.logger.info "Decoded token: #{decoded_token}"
     decoded_token
-  end
-
-  # ユーザー認証を行う
-  def authenticate_user!
-    unless current_user
-      render json: { error: 'Unauthorized' }, status: :unauthorized
-    end
   end
 end
