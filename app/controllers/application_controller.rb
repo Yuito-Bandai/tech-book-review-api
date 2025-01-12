@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
     return nil unless token
 
     begin
+      token = extract_token_from_header
       decoded_token = decode_token(token)
       Rails.logger.info "Decoded token: #{decoded_token}" if decoded_token  # デコード後のトークン内容をログ出力
       user_id = decoded_token[0]['user_id']
