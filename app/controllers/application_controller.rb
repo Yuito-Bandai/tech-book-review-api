@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
   # トークンをデコード
   def decode_token(token)
     Rails.logger.info "Attempting to decode token: #{token}"
-    decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, algorithm: 'HS256')
+    decoded_token = JWT.decode(token, Rails.application.credentials.jwt_secret, true, algorithm: 'HS256')
     Rails.logger.info "Decoded token: #{decoded_token}"
     decoded_token
   end
