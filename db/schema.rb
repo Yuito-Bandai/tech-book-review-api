@@ -10,56 +10,63 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_03_080531) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_25_084757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bookmarks", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "book_id", null: false
+  create_table "authors", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_bookmarks_on_book_id"
-    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "books", force: :cascade do |t|
     t.string "title"
-    t.string "author"
-    t.text "description"
-    t.date "published_at"
+    t.date "published_date"
+    t.string "image_link"
+    t.string "info_link"
+    t.string "isbn"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "price"
-    t.float "rating"
-    t.integer "pages"
-    t.float "weight"
-    t.string "language"
-    t.string "publisher"
-    t.string "isbn"
-    t.string "amazon_url"
+    t.string "author"
   end
 
-  create_table "books_tags", id: false, force: :cascade do |t|
-    t.bigint "book_id", null: false
-    t.bigint "tag_id", null: false
-    t.index ["book_id", "tag_id"], name: "index_books_tags_on_book_id_and_tag_id"
-    t.index ["tag_id", "book_id"], name: "index_books_tags_on_tag_id_and_book_id"
+  create_table "books_authors", force: :cascade do |t|
+    t.integer "book_id"
+    t.integer "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reading_statuses", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
+    t.string "status"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "reviews", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
     t.integer "rating"
     t.text "content"
-    t.bigint "book_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_reviews_on_book_id"
-    t.index ["user_id"], name: "index_reviews_on_user_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -70,10 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_03_080531) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "bookmarks", "books"
-  add_foreign_key "bookmarks", "users"
-  add_foreign_key "reviews", "books"
-  add_foreign_key "reviews", "users"
 end

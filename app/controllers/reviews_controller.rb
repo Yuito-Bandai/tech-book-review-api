@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
     review_service = ReviewService.new(@book, current_user)
 
     if @book
-      reviews = review_service.index_for_book  # 修正: index -> index_for_book
+      reviews = review_service.index_for_book
       render json: reviews
     else
       render json: { error: 'Book not found' }, status: :not_found

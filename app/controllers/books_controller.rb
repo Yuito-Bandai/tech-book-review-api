@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   def index
-    books = Book.all
+    books = Book.includes(:authors) # 著者情報も一緒に読み込む
 
     # タイトルで検索
     if params[:title].present?
@@ -9,7 +9,7 @@ class BooksController < ApplicationController
 
     # 著者名で検索
     if params[:author].present?
-      books = books.where('author LIKE ?', "%#{params[:author]}%")
+      books = books.joins(:authors).where('authors.name LIKE ?', "%#{params[:author]}%")
     end
 
     # 最大15件を返す
@@ -50,6 +50,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :author, :category_id, tag_ids: [])
+    params.require(:book).permit(:title, :category_id, tag_ids: [])
   end
 end
