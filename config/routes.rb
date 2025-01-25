@@ -2,11 +2,11 @@ Rails.application.routes.draw do
   root to: "books#index"
 
   resources :books do
-    resources :reviews, only: [:create]
-    resources :tags, only: [:index]
+    resources :reviews, only: [:index,:create]
   end
 
   resources :reviews, only: [:show, :update, :destroy]
+
   resources :users, only: [:create, :show] do
     resources :bookmarks, only: [:index, :create, :destroy]
   end
@@ -15,5 +15,5 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   # その他のカスタムルート
-  get '/books/:book_id/reviews', to: 'reviews#index_for_book'
+  # post '/books/:book_id/like', to: 'likes#create', as: 'like'
 end

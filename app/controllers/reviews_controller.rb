@@ -1,11 +1,13 @@
 class ReviewsController < ApplicationController
+  before_action :set_book, only: [:index, :create]
+
   # 特定の書籍に関連するレビューを取得 (GET /books/:book_id/reviews)
-  def index_for_book
-    @book = Book.find_by(id: params[:book_id])
+  def index
+    review_service = ReviewService.new(@book, current_user)
 
     if @book
-      @reviews = @book.reviews
-      render json: @reviews
+      reviews = review_service.index_for_book  # 修正: index -> index_for_book
+      render json: reviews
     else
       render json: { error: 'Book not found' }, status: :not_found
     end
@@ -13,24 +15,12 @@ class ReviewsController < ApplicationController
 
   # 新しいレビューを作成するアクション (POST /books/:book_id/reviews)
   def create
-    @book = Book.find_by(id: params[:book_id])
+    review_service = ReviewService.new(@book, current_user, review_params)
 
-    if @book
-      if current_user.nil?
-        render json: { error: 'User must be logged in' }, status: :unauthorized
-        return
-      end
-
-      @review = @book.reviews.new(review_params)
-      @review.user_id = current_user.id
-
-      if @review.save
-        render json: @review, status: :created
-      else
-        render json: { error: 'Failed to create review', messages: @review.errors.full_messages }, status: :unprocessable_entity
-      end
+    if review_service.create
+      render json: { message: 'Review added successfully', review: review_service.review }, status: :created
     else
-      render json: { error: 'Book not found' }, status: :not_found
+      render json: { error: 'Failed to create review', messages: review_service.errors }, status: :unprocessable_entity
     end
   end
 
@@ -39,5 +29,10 @@ class ReviewsController < ApplicationController
   # Strong Parameters
   def review_params
     params.require(:review).permit(:content, :rating)
+  end
+
+  def set_book
+    @book = Book.find_by(id: params[:book_id])
+    Rails.logger.debug("Book found: #{@book.inspect}")
   end
 end
