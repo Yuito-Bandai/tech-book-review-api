@@ -1,16 +1,27 @@
 class Book < ApplicationRecord
-  has_many :bookmarks
-  has_many :reading_statuses
-  has_many :likes
-  has_many :reviews
-  has_many :books_authors
-  has_many :authors, through: :books_authors
+  def self.create_from_google_books_data(data)
+    create(
+      title: data[:title],
+      published_date: data[:published_date],
+      image_link: data[:image_link],
+      info_link: data[:info_link],
+      isbn: data[:isbn],
+      author: data[:author],
+      publisher: data[:publisher],
+      description: data[:description]
+    )
+  end
 
-  validates :title, presence: true
-  validates :isbn, presence: true, uniqueness: true
-
-  # ISBNで本を検索するメソッド
-  def self.find_by_isbn(isbn)
-    find_by(isbn: isbn)
+  def self.build_from_google_books_data(data)
+    new(
+      title: data[:title],
+      published_date: data[:published_date],
+      image_link: data[:image_link],
+      info_link: data[:info_link],
+      isbn: data[:isbn],
+      author: data[:author],
+      publisher: data[:publisher],
+      description: data[:description]
+    )
   end
 end

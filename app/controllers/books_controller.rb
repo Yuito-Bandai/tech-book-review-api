@@ -1,55 +1,37 @@
 class BooksController < ApplicationController
   def index
-    books = Book.includes(:authors) # 著者情報も一緒に読み込む
-
-    # タイトルで検索
-    if params[:title].present?
-      books = books.where('title LIKE ?', "%#{params[:title]}%")
+    if params[:query].present?
+      books = search_books_from_google(params[:query])
+    else
+      books = Book.limit(15) # データベースから15件取得
     end
-
-    # 著者名で検索
-    if params[:author].present?
-      books = books.joins(:authors).where('authors.name LIKE ?', "%#{params[:author]}%")
-    end
-
-    # 最大15件を返す
-    books = books.limit(15)
 
     render json: books, each_serializer: BookSerializer
   end
 
   def show
-    book = Book.find(params[:id])
-    render json: book, serializer: BookSerializer
-  end
+    book = Book.find_by(id: params[:id])
 
-  def create
-    book = Book.new(book_params)
-    if book.save
-      render json: book, serializer: BookSerializer, status: :created
-    else
-      render json: { errors: book.errors.full_messages }, status: :unprocessable_entity
+    if book.nil?
+      book_data = GoogleBooksService.search_books_by_id(params[:id])
+      if book_data
+        book = Book.create_from_google_books_data(book_data)
+      end
     end
-  end
 
-  def update
-    book = Book.find(params[:id])
-    if book.update(book_params)
+    if book
       render json: book, serializer: BookSerializer
     else
-      render json: { errors: book.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'Book not found' }, status: :not_found
     end
-  end
-
-  def destroy
-    book = Book.find(params[:id])
-    book.destroy
-    head :no_content
   end
 
   private
 
-  def book_params
-    params.require(:book).permit(:title, :category_id, tag_ids: [])
+  def search_books_from_google(query)
+    results = GoogleBooksService.search_by_query(query)
+    results.map do |book_data|
+      Book.build_from_google_books_data(book_data) # データベースには保存せず、表示用にデータを構築
+    end.compact
   end
 end

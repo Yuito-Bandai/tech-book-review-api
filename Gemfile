@@ -59,3 +59,8 @@ gem 'active_model_serializers'
 
 #jwtを使うためのgem
 gem 'jwt'
+
+#rest-clientを使うためのgem
+gem 'rest-client'
+
+gem 'ffi'
