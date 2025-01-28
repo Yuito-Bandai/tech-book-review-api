@@ -23,10 +23,12 @@ class GoogleBooksService
   end
 
   def self.parse_book_data(data)
+    # Rails.logger.info("Data received: #{data.inspect}") # デバッグ用ログ
     volume_info = data['volumeInfo']
     return nil unless volume_info
 
     {
+      id: data['id'],   # idは階層が違うのでdataから取得
       title: volume_info['title'],
       published_date: volume_info['publishedDate'],
       image_link: volume_info['imageLinks']&.dig('thumbnail'),
