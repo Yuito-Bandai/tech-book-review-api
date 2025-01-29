@@ -1,55 +1,47 @@
 class BooksController < ApplicationController
   def index
-    books = Book.all
-
-    # タイトルで検索
-    if params[:title].present?
-      books = books.where('title LIKE ?', "%#{params[:title]}%")
+    if params[:query].present?
+      books = search_books_from_google(params[:query])
+      # Rails.logger.info("Books to be returned: #{books.map(&:as_json)}") # デバッグ用
+    else
+      books = Book.limit(15) # データベースから15件取得
     end
-
-    # 著者名で検索
-    if params[:author].present?
-      books = books.where('author LIKE ?', "%#{params[:author]}%")
-    end
-
-    # 最大15件を返す
-    books = books.limit(15)
 
     render json: books, each_serializer: BookSerializer
   end
 
+  # 本がなければ保存する
   def show
-    book = Book.find(params[:id])
-    render json: book, serializer: BookSerializer
-  end
+    book = Book.find_by(id: params[:id])
 
-  def create
-    book = Book.new(book_params)
-    if book.save
-      render json: book, serializer: BookSerializer, status: :created
-    else
-      render json: { errors: book.errors.full_messages }, status: :unprocessable_entity
+    if book.nil?
+      book_data = GoogleBooksService.search_books_by_id(params[:id])
+      if book_data
+        book = Book.create_from_google_books_data(book_data)
+      end
     end
-  end
 
-  def update
-    book = Book.find(params[:id])
-    if book.update(book_params)
+    if book
       render json: book, serializer: BookSerializer
     else
-      render json: { errors: book.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'Book not found' }, status: :not_found
     end
-  end
-
-  def destroy
-    book = Book.find(params[:id])
-    book.destroy
-    head :no_content
   end
 
   private
 
-  def book_params
-    params.require(:book).permit(:title, :author, :category_id, tag_ids: [])
+  def search_books_from_google(query)
+    results = GoogleBooksService.search_by_query(query)
+    # Rails.logger.info("Search results from Google Books API: #{results.map(&:as_json)}") # デバッグ用(ここまではOK)
+    results.map do |book_data|
+      book = Book.build_from_google_books_data(book_data) # データベースには保存せず、表示用にデータを構築
+      # if book # bookがnilでない場合
+      #   Rails.logger.info("Book data built from Google Books API: #{book.as_json}") # デバッグ用
+      # else
+      #   Rails.logger.info("Book is nil for data: #{book_data}") # bookがnilの場合のデバッグ用
+      # end
+      book
+    end.compact
+
   end
 end
