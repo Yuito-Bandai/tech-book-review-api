@@ -22,6 +22,7 @@ rails s
 
 ![image](https://github.com/user-attachments/assets/93861adb-919a-4e6d-a05a-f1ca70cacade)
 
+![image](https://github.com/user-attachments/assets/50aa9b53-4ebc-4407-b43d-e031348d79b1)
 
 
 
