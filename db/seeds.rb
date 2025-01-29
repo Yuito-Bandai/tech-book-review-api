@@ -19,31 +19,59 @@ users = User.create!([
 # Authors
 puts "Creating authors..."
 authors = Author.create!([
-  { name: "Russ Olsen" },
-  { name: "Douglas Crockford" },
-  { name: "Steve Krug" }
+  { name: "ミック" },
+  { name: "松尾 正信" },
+  { name: "山田祥寛" }
 ])
 
 # Books
 puts "Creating books..."
 books = Book.create!([
-  { title: "Eloquent Ruby", published_date: "2011-02-15", image_link: "https://example.com/eloquent_ruby.jpg", info_link: "https://example.com/eloquent_ruby", isbn: "978-0321584100" },
-  { title: "JavaScript: The Good Parts", published_date: "2008-05-01", image_link: "https://example.com/js_good_parts.jpg", info_link: "https://example.com/js_good_parts", isbn: "978-0596517748" },
-  { title: "Don't Make Me Think", published_date: "2000-08-01", image_link: "https://example.com/dont_make_me_think.jpg", info_link: "https://example.com/dont_make_me_think", isbn: "978-0321344754" }
+  {
+    id: "76pxDwAAQBAJ",
+    title: "達人に学ぶSQL徹底指南書 第2版 初級者で終わりたくないあなたへ",
+    published_date: "2018-10-11",
+    publisher: "翔泳社",
+    isbn: "9784798157832",
+    image_link: "http://books.google.com/books/content?id=76pxDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    info_link: "https://play.google.com/store/books/details?id=76pxDwAAQBAJ&source=gbs_api",
+    description: "SQLを扱うエンジニア必携のロングセラー、10年ぶりの改訂! …(省略)… SQLの原理や背景も詳しく解説。",
+  },
+  {
+    id: "9SOJEAAAQBAJ",
+    title: "PythonプログラミングABC",
+    published_date: "2022-09-16",
+    publisher: "近代科学社",
+    isbn: "9784764906426",
+    image_link: "http://books.google.com/books/content?id=9SOJEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    info_link: "https://play.google.com/store/books/details?id=9SOJEAAAQBAJ&source=gbs_api",
+    description: "【Pythonプログラミングの“入門の入り口”になる教科書！】 …(省略)… Python入門者に最適な一冊。",
+  },
+  {
+    id: "iLrrDwAAQBAJ",
+    title: "独習Python",
+    published_date: "2020-06-22",
+    publisher: "翔泳社",
+    isbn: "9784798163642",
+    image_link: "http://books.google.com/books/content?id=iLrrDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    info_link: "http://books.google.co.jp/books?id=iLrrDwAAQBAJ&dq=intitle:python&hl=&source=gbs_api",
+    description: "手を動かしておぼえるPythonプログラミング ――独学に最適な“標準教科書” …(省略)… 初学者から再入門者までおすすめの一冊。",
+  }
 ])
 
-# Associate authors with books (ensure no duplicate associations)
+# Associate authors with books
 puts "Associating authors with books..."
 books.each_with_index do |book, index|
+  # Using book.id and author.id to associate
   BooksAuthor.find_or_create_by!(book_id: book.id, author_id: authors[index].id)
 end
 
 # Reviews
 puts "Creating reviews..."
 reviews = Review.create!([
-  { rating: 5, content: "Ruby エンジニアは必ず読むべき！", book: books[0], user: users[0] },
-  { rating: 4, content: "JavaScriptの学習者にとってめっちゃいい", book: books[1], user: users[1] },
-  { rating: 5, content: "とても分かりやすかった", book: books[2], user: users[2] }
+  { rating: 5, content: "SQLの基礎から応用まで幅広く学べる良書", book: books[0], user: users[0] },
+  { rating: 4, content: "Python の基礎がしっかり学べる", book: books[1], user: users[1] },
+  { rating: 5, content: "独習に最適な Python 本", book: books[2], user: users[2] }
 ])
 
 # Bookmarks

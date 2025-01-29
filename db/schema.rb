@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_28_123825) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_29_071637) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_28_123825) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "book_id"
+    t.string "book_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_28_123825) do
   end
 
   create_table "books_authors", force: :cascade do |t|
-    t.integer "book_id"
+    t.string "book_id"
     t.integer "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,14 +49,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_28_123825) do
 
   create_table "likes", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "book_id"
+    t.string "book_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "reading_statuses", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "book_id"
+    t.string "book_id"
     t.string "status"
     t.datetime "started_at"
     t.datetime "finished_at"
