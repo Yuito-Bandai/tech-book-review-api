@@ -5,7 +5,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     end
 
     if Rails.env.production?
-      origins 'https://tech-book-review-frontend.vercel.app/' # 本番環境のフロントエンドURL
+      origins 'https://tech-book-review-frontend-fnoibwtsa-bandais-projects.vercel.app/' # 本番環境のフロントエンドURL
     end
 
 
