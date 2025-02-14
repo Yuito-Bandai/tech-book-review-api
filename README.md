@@ -3,6 +3,9 @@
   { username: "alice", email: "alice@example.com", password: "password1234" },
   { username: "bob", email: "bob@example.com", password: "password1235" },
   { username: "charlie", email: "charlie@example.com", password: "password1236" }
+
+
+  サーバーが無料プランのため、最初のリクエストに50秒かかります🙇
   
 ## ER図
 ![スクリーンショット 2025-01-29 193901](https://github.com/user-attachments/assets/03ef87f4-35e2-4dc4-a7f6-f9b55b822d4e)
